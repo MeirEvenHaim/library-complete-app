@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Clients</title>
+</head>
+
+<body>
+    <h1>Manage Clients</h1>
+
+    <!-- Form to create a new client -->
+    <form action="/clients" method="POST">
+        <h2>Add New Client</h2>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <button type="submit">Add Client</button>
+    </form>
+
+    <!-- List of clients -->
+    <h2>Clients List</h2>
+    <ul>
+        {% for client in clients %}
+        <li>
+            {{ client['name'] }} - {{ client['email'] }}
+            <!-- Form to update client -->
+            <form action="/clients/{{ client['id'] }}/update" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                <input type="text" name="name" value="{{ client['name'] }}" required>
+                <input type="email" name="email" value="{{ client['email'] }}" required>
+                <button type="submit">Update</button>
+            </form>
+            <!-- Form to delete client -->
+            <form action="/clients/{{ client['id'] }}/delete" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

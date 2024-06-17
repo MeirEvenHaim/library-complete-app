@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Loans</title>
+</head>
+
+<body>
+    <h1>Manage Loans</h1>
+
+    <!-- Form to create a new loan -->
+    <form action="/loans" method="POST">
+        <h2>Add New Loan</h2>
+        <label for="client_id">Client:</label>
+        <select id="client_id" name="client_id" required>
+            {% for client in clients %}
+            <option value="{{ client['id'] }}">{{ client['name'] }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="book_id">Book:</label>
+        <select id="book_id" name="book_id" required>
+            {% for book in books %}
+            <option value="{{ book['id'] }}">{{ book['title'] }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="loan_date">Loan Date:</label>
+        <input type="date" id="loan_date" name="loan_date" required><br><br>
+        <button type="submit">Add Loan</button>
+    </form>
+
+    <!-- List of loans -->
+    <h2>Loans List</h2>
+    <ul>
+        {% for loan in loans %}
+        <li>
+            {{ loan['client_name'] }} borrowed {{ loan['book_title'] }}
+            <br>
+            Loan Date: {{ loan['loan_date'] }}
+            {% if loan['return_date'] %}
+            <br>
+            Return Date: {{ loan['return_date'] }}
+            {% endif %}
+            <!-- Form to update loan -->
+            <form action="/loans/{{ loan['id'] }}/update" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                <label for="client_id">Client:</label>
+                <select id="client_id" name="client_id" required>
+                    {% for client in clients %}
+                    <option value="{{ client['id'] }}" {% if client['id']==loan['client_id'] %}selected{% endif %}>
+                        {{ client['name'] }}
+                    </option>
+                    {% endfor %}
+                </select><br><br>
+                <label for="book_id">Book:</label>
+                <select id="book_id" name="book_id" required>
+                    {% for book in books %}
+                    <option value="{{ book['id'] }}" {% if book['id']==loan['book_id'] %}selected{% endif %}>
+                        {{ book['title'] }}
+                    </option>
+                    {% endfor %}
+                </select><br><br>
+                <label for="loan_date">Loan Date:</label>
+                <input type="date" id="loan_date" name="loan_date" value="{{ loan['loan_date'] }}" required><br><br>
+                <label for="return_date">Return Date:</label>
+                <input type="date" id="return_date" name="return_date" value="{{ loan['return_date'] }}"><br><br>
+                <button type="submit">Update</button>
+            </form>
+            <!-- Form to delete loan -->
+            <form action="/loans/{{ loan['id'] }}/delete" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

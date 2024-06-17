@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Flask App{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>{% block header %}Flask App{% endblock %}</h1>
+        <nav>
+          <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li>
+              <a href="{{ url_for('manage_clients') }}">Manage Clients</a>
+            </li>
+            <li><a href="{{ url_for('manage_books') }}">Manage Books</a></li>
+            <li><a href="{{ url_for('manage_loans') }}">Manage Loans</a></li>
+          </ul>
+        </nav>
+      </header>
+      <main>{% block content %}{% endblock %}</main>
+      <footer>
+        <p>&copy; 2024 Your Company</p>
+      </footer>
+    </div>
+  </body>
+</html>
